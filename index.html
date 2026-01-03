@@ -1,73 +1,142 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MR VPS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR VPS</title>
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0A3D62">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A3D62">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0A3D62;
-      color: white;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0A3D62;
+  color: white;
+}
 
-    header {
-      padding: 20px;
-    }
+header {
+  text-align: center;
+  padding: 20px;
+}
 
-    img {
-      width: 120px;
-      margin-bottom: 10px;
-    }
+header img {
+  width: 120px;
+}
 
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      padding: 20px;
-    }
+h1 {
+  margin: 10px 0 0;
+}
 
-    button {
-      padding: 15px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      background: #1e90ff;
-      color: white;
-      cursor: pointer;
-    }
+.hidden {
+  display: none;
+}
 
-    button:active {
-      background: #1565c0;
-    }
-  </style>
+.menu, .servicos {
+  padding: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #1e90ff;
+  color: white;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.lista {
+  margin-top: 15px;
+}
+
+.item {
+  background: rgba(255,255,255,0.15);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <img src="logo.png" alt="MR VPS">
+  <img src="logo.png">
   <h1>MR VPS</h1>
-  <p>Central de serviços</p>
 </header>
 
-<div class="menu">
-  <button onclick="alert('Serviços em desenvolvimento')">📋 Serviços</button>
-  <button onclick="alert('Clientes em desenvolvimento')">👤 Clientes</button>
-  <button onclick="alert('Agenda em desenvolvimento')">📅 Agenda</button>
-  <button onclick="alert('Configurações em desenvolvimento')">⚙️ Configurações</button>
+<!-- MENU -->
+<div id="menu" class="menu">
+  <button onclick="abrirServicos()">📋 Serviços</button>
+  <button disabled>👤 Clientes</button>
+  <button disabled>📅 Agenda</button>
+  <button disabled>⚙️ Configurações</button>
+</div>
+
+<!-- SERVIÇOS -->
+<div id="servicos" class="servicos hidden">
+  <h2>Serviços</h2>
+
+  <input id="novoServico" placeholder="Descrição do serviço">
+  <button onclick="adicionarServico()">➕ Adicionar serviço</button>
+
+  <div class="lista" id="listaServicos"></div>
+
+  <button onclick="voltarMenu()">⬅ Voltar ao menu</button>
 </div>
 
 <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-  }
+const menu = document.getElementById('menu');
+const servicosTela = document.getElementById('servicos');
+const lista = document.getElementById('listaServicos');
+const input = document.getElementById('novoServico');
+
+let servicos = JSON.parse(localStorage.getItem('servicos')) || [];
+
+function abrirServicos() {
+  menu.classList.add('hidden');
+  servicosTela.classList.remove('hidden');
+  render();
+}
+
+function voltarMenu() {
+  servicosTela.classList.add('hidden');
+  menu.classList.remove('hidden');
+}
+
+function adicionarServico() {
+  if (!input.value) return;
+  servicos.push(input.value);
+  localStorage.setItem('servicos', JSON.stringify(servicos));
+  input.value = '';
+  render();
+}
+
+function render() {
+  lista.innerHTML = '';
+  servicos.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.textContent = s;
+    lista.appendChild(div);
+  });
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
 </script>
 
 </body>
