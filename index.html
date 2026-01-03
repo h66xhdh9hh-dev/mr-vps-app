@@ -4,9 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MR VPS</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0A3D62">
 </head>
 <body>
   <h1>MR VPS</h1>
   <p>Aplicativo iniciado com sucesso</p>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
 </body>
 </html>
