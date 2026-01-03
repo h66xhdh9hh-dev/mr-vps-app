@@ -7,28 +7,68 @@
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0A3D62">
-</head>
-<body style="margin:0; font-family: Arial, sans-serif; background:#0b1c2d; color:white; text-align:center;">
 
-  <div style="padding:40px 20px;">
-    
-    <img src="logo.png" alt="MR VPS"
-         style="max-width:240px; width:100%; margin-bottom:20px;">
-
-    <h1 style="margin:10px 0;">MR VPS</h1>
-
-    <p style="opacity:0.85;">
-      Aplicativo iniciado com sucesso
-    </p>
-
-  </div>
-
-</body>
-
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0A3D62;
+      color: white;
+      text-align: center;
     }
-  </script>
+
+    header {
+      padding: 20px;
+    }
+
+    img {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #1e90ff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:active {
+      background: #1565c0;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" alt="MR VPS">
+  <h1>MR VPS</h1>
+  <p>Central de serviços</p>
+</header>
+
+<div class="menu">
+  <button onclick="alert('Serviços em desenvolvimento')">📋 Serviços</button>
+  <button onclick="alert('Clientes em desenvolvimento')">👤 Clientes</button>
+  <button onclick="alert('Agenda em desenvolvimento')">📅 Agenda</button>
+  <button onclick="alert('Configurações em desenvolvimento')">⚙️ Configurações</button>
+</div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
+
 </body>
 </html>
