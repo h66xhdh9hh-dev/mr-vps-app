@@ -2,36 +2,40 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>MR VPS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.json">
+<title>MR VPS</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #0a2a66, #0f4fa8);
+  background: linear-gradient(180deg,#0a1f44,#0f3c88);
   color: #fff;
+}
+
+header {
   text-align: center;
+  padding: 20px;
 }
 
 header img {
-  width: 110px;
-  margin-top: 20px;
+  width: 100px;
 }
 
-button {
-  padding: 12px;
-  margin: 6px;
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+nav button {
+  padding: 10px 15px;
   border: none;
-  border-radius: 8px;
-  background: #1e6de0;
+  border-radius: 6px;
+  background: #1e90ff;
   color: #fff;
   cursor: pointer;
-}
-
-button:hover {
-  background: #2f80ff;
 }
 
 section {
@@ -43,28 +47,32 @@ section.active {
   display: block;
 }
 
-input, textarea {
-  width: 90%;
-  max-width: 400px;
-  padding: 10px;
+button.sub {
   margin: 5px;
+  padding: 8px 12px;
   border-radius: 6px;
+  border: none;
+  background: #00bcd4;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 5px;
   border: none;
 }
 
-ul {
-  max-width: 400px;
-  margin: 10px auto;
-  text-align: left;
-}
-
-.voltar {
-  background: #444;
-  margin-top: 15px;
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
 .whatsapp {
-  background: #25D366;
+  background: #25d366;
 }
 </style>
 </head>
@@ -72,138 +80,134 @@ ul {
 <body>
 
 <header>
-  <img src="logo.png">
+  <img src="logo.png" alt="MR VPS">
   <h1>MR VPS</h1>
 </header>
 
-<!-- MENU -->
-<section id="menu" class="active">
-  <button onclick="abrirTela('servicos')">🧰 Serviços</button>
-  <button onclick="abrirTela('clientes')">👥 Clientes</button>
-  <button onclick="abrirTela('agenda')">📅 Agenda</button>
-  <button class="whatsapp" onclick="abrirWhats()">💬 WhatsApp</button>
-</section>
+<nav>
+  <button onclick="abrir('servicos')">Serviços</button>
+  <button onclick="abrir('clientes')">Clientes</button>
+  <button onclick="abrir('agenda')">Agenda</button>
+  <button class="whatsapp" onclick="abrirWhats()">WhatsApp</button>
+</nav>
 
 <!-- SERVIÇOS -->
-<section id="servicos">
-<h2>Serviços</h2>
+<section id="servicos" class="active">
+  <h2>Serviços</h2>
 
-<ul id="listaServicos">
-  <li>CFTV - Câmeras</li>
-  <li>Vídeo Porteiros</li>
-  <li>Interfones</li>
-  <li>Portão Eletrônico</li>
-  <li>Instalação de TVs</li>
-  <li>Instalação de Suportes para TVs</li>
-  <li>Serviço de TI</li>
-  <li>Atualização de Aparelhos</li>
-  <li>Rede Internet</li>
-  <li>Antenas Digitais</li>
-  <li>Starlink</li>
-  <li>Laudo / Seguro</li>
-</ul>
+  <button class="sub" onclick="mostrarSub('Comprar')">Comprar</button>
+  <button class="sub" onclick="mostrarSub('Instalação')">Instalação</button>
+  <button class="sub" onclick="mostrarSub('Manutenção')">Manutenção</button>
+  <button class="sub" onclick="mostrarSub('Laudo')">Laudo</button>
 
-<input id="novoServico" placeholder="Adicionar novo serviço">
-<button onclick="addServico()">➕ Adicionar</button>
+  <div id="listaServicos" class="card"></div>
 
-<button class="voltar" onclick="abrirTela('menu')">⬅ Voltar</button>
+  <h3>Adicionar serviço manual</h3>
+  <input id="novoServico" placeholder="Novo serviço">
+  <button onclick="addServico()">Adicionar</button>
 </section>
 
 <!-- CLIENTES -->
 <section id="clientes">
-<h2>Clientes</h2>
+  <h2>Clientes</h2>
 
-<input id="clienteNome" placeholder="Nome do cliente">
-<input id="clienteContato" placeholder="Contato">
-<textarea id="clienteObs" placeholder="Observações"></textarea>
-<button onclick="salvarCliente()">💾 Salvar Cliente</button>
+  <input id="nomeCliente" placeholder="Nome">
+  <input id="telCliente" placeholder="Telefone">
+  <textarea id="obsCliente" placeholder="Observações"></textarea>
+  <button onclick="salvarCliente()">Salvar Cliente</button>
 
-<ul id="listaClientes"></ul>
-
-<button class="voltar" onclick="abrirTela('menu')">⬅ Voltar</button>
+  <div id="listaClientes"></div>
 </section>
 
 <!-- AGENDA -->
 <section id="agenda">
-<h2>Agenda</h2>
+  <h2>Agenda</h2>
 
-<input type="date" id="dataAgenda">
-<input type="time" id="horaAgenda">
-<input id="descAgenda" placeholder="Descrição">
-<button onclick="salvarAgenda()">📌 Agendar</button>
+  <input type="date" id="dataAgenda">
+  <input type="time" id="horaAgenda">
+  <input id="clienteAgenda" placeholder="Cliente">
+  <input id="servicoAgenda" placeholder="Serviço">
+  <button onclick="salvarAgenda()">Salvar Agenda</button>
 
-<ul id="listaAgenda"></ul>
-
-<button class="voltar" onclick="abrirTela('menu')">⬅ Voltar</button>
+  <div id="listaAgenda"></div>
 </section>
 
 <script>
-// NAVEGAÇÃO
-function abrirTela(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+function abrir(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-// WHATSAPP
 function abrirWhats() {
-  window.open("https://wa.me/5518996362624", "_blank");
+  window.open("https://wa.me/5518999999999","_blank");
 }
 
-// SERVIÇOS
+const servicosBase = [
+"CFTV – Câmeras","Vídeo Porteiros","Interfones","Portão Eletrônico",
+"Cabeamento de Rede Internet","Cabeamento de Antena de TV",
+"Antenas Digitais","Mão de Obra","Starlink","Acionar Seguro (Laudo)",
+"Instalação de TVs","Instalação de Suportes para TVs",
+"Serviço de TI","Atualização de Aparelhos"
+];
+
+let servicosExtras = JSON.parse(localStorage.getItem("servicos")) || [];
+
+function mostrarSub(tipo) {
+  const area = document.getElementById("listaServicos");
+  area.innerHTML = <h3>${tipo}</h3><ul> +
+    servicosBase.concat(servicosExtras).map(s=><li>${s}</li>).join("") +
+    "</ul>";
+}
+
 function addServico() {
-  const txt = novoServico.value;
-  if (!txt) return;
-  listaServicos.innerHTML += <li>${txt}</li>;
-  novoServico.value = "";
+  const s = novoServico.value;
+  if(!s) return;
+  servicosExtras.push(s);
+  localStorage.setItem("servicos",JSON.stringify(servicosExtras));
+  novoServico.value="";
+  mostrarSub("Personalizado");
 }
 
-// CLIENTES
+let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+
 function salvarCliente() {
-  const nome = clienteNome.value;
-  if (!nome) return;
-
-  const clientes = JSON.parse(localStorage.getItem("clientes") || "[]");
   clientes.push({
-    nome,
-    contato: clienteContato.value,
-    obs: clienteObs.value
+    nome:nomeCliente.value,
+    tel:telCliente.value,
+    obs:obsCliente.value
   });
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-  carregarClientes();
-  clienteNome.value = clienteContato.value = clienteObs.value = "";
+  localStorage.setItem("clientes",JSON.stringify(clientes));
+  listarClientes();
 }
 
-function carregarClientes() {
-  listaClientes.innerHTML = "";
-  const clientes = JSON.parse(localStorage.getItem("clientes") || "[]");
-  clientes.forEach(c => {
-    listaClientes.innerHTML += <li><b>${c.nome}</b><br>${c.contato}<br>${c.obs}</li>;
-  });
+function listarClientes() {
+  listaClientes.innerHTML = clientes.map(c=>`
+  <div class="card">
+    <b>${c.nome}</b><br>${c.tel}<br>${c.obs}
+  </div>`).join("");
 }
+listarClientes();
 
-// AGENDA
+let agenda = JSON.parse(localStorage.getItem("agenda")) || [];
+
 function salvarAgenda() {
-  const agenda = JSON.parse(localStorage.getItem("agenda") || "[]");
   agenda.push({
-    data: dataAgenda.value,
-    hora: horaAgenda.value,
-    desc: descAgenda.value
+    data:dataAgenda.value,
+    hora:horaAgenda.value,
+    cliente:clienteAgenda.value,
+    servico:servicoAgenda.value
   });
-  localStorage.setItem("agenda", JSON.stringify(agenda));
-  carregarAgenda();
+  localStorage.setItem("agenda",JSON.stringify(agenda));
+  listarAgenda();
 }
 
-function carregarAgenda() {
-  listaAgenda.innerHTML = "";
-  const agenda = JSON.parse(localStorage.getItem("agenda") || "[]");
-  agenda.forEach(a => {
-    listaAgenda.innerHTML += <li>${a.data} ${a.hora}<br>${a.desc}</li>;
-  });
+function listarAgenda() {
+  listaAgenda.innerHTML = agenda.map(a=>`
+  <div class="card">
+    ${a.data} ${a.hora}<br>${a.cliente}<br>${a.servico}
+  </div>`).join("");
 }
-
-// INIT
-carregarClientes();
-carregarAgenda();
+listarAgenda();
 </script>
 
 </body>
