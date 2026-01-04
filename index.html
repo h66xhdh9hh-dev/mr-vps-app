@@ -1,177 +1,209 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>MR VPS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<title>MR VPS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0a2a66, #0f4fa8);
-      color: #fff;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #0a2a66, #0f4fa8);
+  color: #fff;
+  text-align: center;
+}
 
-    header img {
-      width: 120px;
-      margin-top: 20px;
-    }
+header img {
+  width: 110px;
+  margin-top: 20px;
+}
 
-    nav {
-      margin: 20px;
-    }
+button {
+  padding: 12px;
+  margin: 6px;
+  border: none;
+  border-radius: 8px;
+  background: #1e6de0;
+  color: #fff;
+  cursor: pointer;
+}
 
-    nav button {
-      width: 90%;
-      max-width: 400px;
-      padding: 14px;
-      margin: 6px auto;
-      display: block;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      background: #1e6de0;
-      color: #fff;
-      cursor: pointer;
-    }
+button:hover {
+  background: #2f80ff;
+}
 
-    nav button:hover {
-      background: #2f80ff;
-    }
+section {
+  display: none;
+  padding: 20px;
+}
 
-    section {
-      display: none;
-      padding: 20px;
-    }
+section.active {
+  display: block;
+}
 
-    section.active {
-      display: block;
-    }
+input, textarea {
+  width: 90%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 6px;
+  border: none;
+}
 
-    .sub-buttons button {
-      width: 45%;
-      margin: 5px;
-      background: #2a7df0;
-    }
+ul {
+  max-width: 400px;
+  margin: 10px auto;
+  text-align: left;
+}
 
-    ul {
-      text-align: left;
-      max-width: 400px;
-      margin: 15px auto;
-    }
+.voltar {
+  background: #444;
+  margin-top: 15px;
+}
 
-    li {
-      margin-bottom: 6px;
-    }
-
-    .voltar {
-      margin-top: 20px;
-      background: #444;
-    }
-  </style>
+.whatsapp {
+  background: #25D366;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <img src="logo.png" alt="MR VPS">
+  <img src="logo.png">
   <h1>MR VPS</h1>
 </header>
 
-<!-- MENU PRINCIPAL -->
-<nav>
+<!-- MENU -->
+<section id="menu" class="active">
   <button onclick="abrirTela('servicos')">🧰 Serviços</button>
   <button onclick="abrirTela('clientes')">👥 Clientes</button>
   <button onclick="abrirTela('agenda')">📅 Agenda</button>
-</nav>
+  <button class="whatsapp" onclick="abrirWhats()">💬 WhatsApp</button>
+</section>
 
 <!-- SERVIÇOS -->
-<section id="servicos" class="active">
-  <h2>Serviços</h2>
+<section id="servicos">
+<h2>Serviços</h2>
 
-  <div class="sub-buttons">
-    <button onclick="abrirTela('comprar')">🛒 Comprar</button>
-    <button onclick="abrirTela('instalacao')">🔧 Instalação</button>
-    <button onclick="abrirTela('manutencao')">🛠 Manutenção</button>
-    <button onclick="abrirTela('laudo')">📄 Laudo</button>
-  </div>
-</section>
+<ul id="listaServicos">
+  <li>CFTV - Câmeras</li>
+  <li>Vídeo Porteiros</li>
+  <li>Interfones</li>
+  <li>Portão Eletrônico</li>
+  <li>Instalação de TVs</li>
+  <li>Instalação de Suportes para TVs</li>
+  <li>Serviço de TI</li>
+  <li>Atualização de Aparelhos</li>
+  <li>Rede Internet</li>
+  <li>Antenas Digitais</li>
+  <li>Starlink</li>
+  <li>Laudo / Seguro</li>
+</ul>
 
-<!-- COMPRAR -->
-<section id="comprar">
-  <h2>Comprar</h2>
-  <ul>
-    <li>CFTV – Câmeras</li>
-    <li>Vídeo Porteiros</li>
-    <li>Interfones</li>
-    <li>Portão Eletrônico</li>
-    <li>Antenas Digitais</li>
-    <li>Starlink</li>
-  </ul>
-  <button class="voltar" onclick="abrirTela('servicos')">⬅ Voltar</button>
-</section>
+<input id="novoServico" placeholder="Adicionar novo serviço">
+<button onclick="addServico()">➕ Adicionar</button>
 
-<!-- INSTALAÇÃO -->
-<section id="instalacao">
-  <h2>Instalação</h2>
-  <ul>
-    <li>CFTV</li>
-    <li>Vídeo Porteiro</li>
-    <li>Interfone</li>
-    <li>Portão Eletrônico</li>
-    <li>Cabeamento de Rede Internet</li>
-    <li>Cabeamento de Antena de TV</li>
-    <li>Starlink</li>
-  </ul>
-  <button class="voltar" onclick="abrirTela('servicos')">⬅ Voltar</button>
-</section>
-
-<!-- MANUTENÇÃO -->
-<section id="manutencao">
-  <h2>Manutenção</h2>
-  <ul>
-    <li>CFTV</li>
-    <li>Portão Eletrônico</li>
-    <li>Antenas</li>
-    <li>Rede / Internet</li>
-  </ul>
-  <button class="voltar" onclick="abrirTela('servicos')">⬅ Voltar</button>
-</section>
-
-<!-- LAUDO -->
-<section id="laudo">
-  <h2>Laudo / Seguro</h2>
-  <ul>
-    <li>Acionar Seguro (Laudo)</li>
-    <li>Relatório Técnico</li>
-  </ul>
-  <button class="voltar" onclick="abrirTela('servicos')">⬅ Voltar</button>
+<button class="voltar" onclick="abrirTela('menu')">⬅ Voltar</button>
 </section>
 
 <!-- CLIENTES -->
 <section id="clientes">
-  <h2>Clientes</h2>
-  <p>Cadastro de clientes (em breve).</p>
-  <button class="voltar" onclick="abrirTela('servicos')">⬅ Voltar</button>
+<h2>Clientes</h2>
+
+<input id="clienteNome" placeholder="Nome do cliente">
+<input id="clienteContato" placeholder="Contato">
+<textarea id="clienteObs" placeholder="Observações"></textarea>
+<button onclick="salvarCliente()">💾 Salvar Cliente</button>
+
+<ul id="listaClientes"></ul>
+
+<button class="voltar" onclick="abrirTela('menu')">⬅ Voltar</button>
 </section>
 
 <!-- AGENDA -->
 <section id="agenda">
-  <h2>Agenda</h2>
-  <p>Agenda de atendimentos (em breve).</p>
-  <button class="voltar" onclick="abrirTela('servicos')">⬅ Voltar</button>
+<h2>Agenda</h2>
+
+<input type="date" id="dataAgenda">
+<input type="time" id="horaAgenda">
+<input id="descAgenda" placeholder="Descrição">
+<button onclick="salvarAgenda()">📌 Agendar</button>
+
+<ul id="listaAgenda"></ul>
+
+<button class="voltar" onclick="abrirTela('menu')">⬅ Voltar</button>
 </section>
 
 <script>
-  function abrirTela(id) {
-    document.querySelectorAll("section").forEach(sec => {
-      sec.classList.remove("active");
-    });
-    document.getElementById(id).classList.add("active");
-  }
+// NAVEGAÇÃO
+function abrirTela(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// WHATSAPP
+function abrirWhats() {
+  window.open("https://wa.me/5518996362624", "_blank");
+}
+
+// SERVIÇOS
+function addServico() {
+  const txt = novoServico.value;
+  if (!txt) return;
+  listaServicos.innerHTML += <li>${txt}</li>;
+  novoServico.value = "";
+}
+
+// CLIENTES
+function salvarCliente() {
+  const nome = clienteNome.value;
+  if (!nome) return;
+
+  const clientes = JSON.parse(localStorage.getItem("clientes") || "[]");
+  clientes.push({
+    nome,
+    contato: clienteContato.value,
+    obs: clienteObs.value
+  });
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+  carregarClientes();
+  clienteNome.value = clienteContato.value = clienteObs.value = "";
+}
+
+function carregarClientes() {
+  listaClientes.innerHTML = "";
+  const clientes = JSON.parse(localStorage.getItem("clientes") || "[]");
+  clientes.forEach(c => {
+    listaClientes.innerHTML += <li><b>${c.nome}</b><br>${c.contato}<br>${c.obs}</li>;
+  });
+}
+
+// AGENDA
+function salvarAgenda() {
+  const agenda = JSON.parse(localStorage.getItem("agenda") || "[]");
+  agenda.push({
+    data: dataAgenda.value,
+    hora: horaAgenda.value,
+    desc: descAgenda.value
+  });
+  localStorage.setItem("agenda", JSON.stringify(agenda));
+  carregarAgenda();
+}
+
+function carregarAgenda() {
+  listaAgenda.innerHTML = "";
+  const agenda = JSON.parse(localStorage.getItem("agenda") || "[]");
+  agenda.forEach(a => {
+    listaAgenda.innerHTML += <li>${a.data} ${a.hora}<br>${a.desc}</li>;
+  });
+}
+
+// INIT
+carregarClientes();
+carregarAgenda();
 </script>
 
 </body>
