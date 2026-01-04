@@ -69,7 +69,16 @@
   <h2>Serviços</h2>
   <p>Lista de serviços aqui.</p>
 </section>
+<section id="servicos" class="active">
+  <h2>Serviços</h2>
 
+  <button onclick="mostrarSub('comprar')">🛒 Comprar</button>
+  <button onclick="mostrarSub('instalacao')">🔧 Instalação</button>
+  <button onclick="mostrarSub('manutencao')">🛠️ Manutenção</button>
+  <button onclick="mostrarSub('laudo')">📄 Laudo</button>
+
+  <div id="conteudo-servicos" style="margin-top:15px;"></div>
+</section>
 <section id="clientes">
   <h2>Clientes</h2>
   <p>Cadastro de clientes aqui.</p>
@@ -81,12 +90,32 @@
 </section>
 
 <script>
-  function abrirTela(id) {
-    document.querySelectorAll("section").forEach(sec => {
-      sec.classList.remove("active");
-    });
-    document.getElementById(id).classList.add("active");
-  }
+function abrirTela(id) {
+  document.querySelectorAll("section").forEach(sec => {
+    sec.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+}
+
+function mostrarSub(tipo) {
+  const area = document.getElementById("conteudo-servicos");
+
+  area.innerHTML = `
+    <h3>${tipo.toUpperCase()}</h3>
+    <ul>
+      <li>CFTV – Câmeras</li>
+      <li>Vídeo Porteiros</li>
+      <li>Interfones</li>
+      <li>Portão Eletrônico</li>
+      <li>Cabeamento de Rede Internet</li>
+      <li>Cabeamento de Antena de TV</li>
+      <li>Antenas Digitais</li>
+      <li>Mão de Obra</li>
+      <li>Starlink</li>
+      <li>Acionar Seguro (Laudo)</li>
+    </ul>
+  `;
+}
 </script>
 
 </body>
