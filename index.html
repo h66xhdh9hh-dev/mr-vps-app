@@ -3,156 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MR VPS</title>
 
+<link rel="manifest" href="manifest.json">
+
 <style>
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(180deg,#0a1f44,#0f3c88);
-  color:#fff;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f2f2f2;
 }
-header{
-  text-align:center;
-  padding:20px;
+
+header {
+  background: #0a3d62;
+  color: white;
+  padding: 15px;
+  text-align: center;
 }
-header img{width:90px;}
-nav{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  padding:10px;
+
+nav button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: #1e90ff;
+  color: white;
+  font-size: 16px;
+  margin-top: 5px;
 }
-nav button{
-  padding:10px 15px;
-  border:none;
-  border-radius:6px;
-  background:#1e90ff;
-  color:#fff;
-  cursor:pointer;
+
+section {
+  display: none;
+  padding: 15px;
+  background: white;
+  margin: 10px;
 }
-section{
-  display:none;
-  padding:20px;
-}
-section.active{display:block;}
-.sub button{
-  margin:5px;
-  padding:8px 12px;
-  border:none;
-  border-radius:6px;
-  background:#00bcd4;
-  cursor:pointer;
-}
-.card{
-  background:rgba(255,255,255,0.12);
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px;
-}
-input,textarea{
-  width:100%;
-  padding:8px;
-  margin:5px 0;
-  border-radius:5px;
-  border:none;
-}
-.whatsapp{background:#25d366;}
 </style>
 </head>
 
 <body>
 
 <header>
-  <img src="logo.png">
-  <h1>MR VPS</h1>
+  <h2>MR VPS</h2>
 </header>
 
 <nav>
-  <button onclick="abrirAba('servicos')">Serviços</button>
-  <button onclick="abrirAba('clientes')">Clientes</button>
-  <button onclick="abrirAba('agenda')">Agenda</button>
-  <button class="whatsapp" onclick="abrirWhats()">WhatsApp</button>
+  <button type="button" onclick="abrirAba('comprar')">Comprar</button>
+  <button type="button" onclick="abrirAba('instalacao')">Instalação</button>
+  <button type="button" onclick="abrirAba('manutencao')">Manutenção</button>
+  <button type="button" onclick="abrirAba('laudo')">Laudo</button>
 </nav>
 
-<section id="servicos" class="active">
-  <h2>Serviços</h2>
-
-  <div class="sub">
-    <button onclick="mostrar('Comprar')">Comprar</button>
-    <button onclick="mostrar('Instalação')">Instalação</button>
-    <button onclick="mostrar('Manutenção')">Manutenção</button>
-    <button onclick="mostrar('Laudo')">Laudo</button>
-  </div>
-
-  <div id="resultado" class="card"></div>
-
-  <h3>Adicionar serviço</h3>
-  <input id="novoServico">
-  <button onclick="addServico()">Adicionar</button>
+<section id="comprar">
+  <h3>Comprar</h3>
+  <p>Adicionar serviços manualmente.</p>
 </section>
 
-<section id="clientes">
-  <h2>Clientes</h2>
-  <input id="nome">
-  <input id="tel">
-  <textarea id="obs"></textarea>
-  <button onclick="salvarCliente()">Salvar</button>
-  <div id="listaClientes"></div>
+<section id="instalacao">
+  <h3>Instalação</h3>
+  <p>Instalação de TVs, suportes, portões, CFTV.</p>
 </section>
 
-<section id="agenda">
-  <h2>Agenda</h2>
-  <input type="date" id="data">
-  <input type="time" id="hora">
-  <input id="cliente">
-  <input id="servico">
-  <button onclick="salvarAgenda()">Salvar</button>
-  <div id="listaAgenda"></div>
+<section id="manutencao">
+  <h3>Manutenção</h3>
+  <p>Manutenção geral.</p>
+</section>
+
+<section id="laudo">
+  <h3>Laudo</h3>
+  <p>Gerar laudos técnicos.</p>
 </section>
 
 <script>
-function abrirAba(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-function abrirWhats(){
-  window.open("https://wa.me/5518999999999","_blank");
-}
-
-const base=[
-"CFTV – Câmeras","Vídeo Porteiros","Interfones","Portão Eletrônico",
-"Cabeamento de Rede Internet","Cabeamento de Antena de TV",
-"Antenas Digitais","Mão de Obra","Starlink","Acionar Seguro (Laudo)",
-"Instalação de TVs","Instalação de Suportes para TVs",
-"Serviço de TI","Atualização de Aparelhos"
-];
-
-let extras=JSON.parse(localStorage.getItem("servicos"))||[];
-
-function mostrar(tipo){
-  resultado.innerHTML="<h3>"+tipo+"</h3><ul>"+base.concat(extras).map(s=>"<li>"+s+"</li>").join("")+"</ul>";
-}
-
-function addServico(){
-  extras.push(novoServico.value);
-  localStorage.setItem("servicos",JSON.stringify(extras));
-  novoServico.value="";
-}
-
-let clientes=JSON.parse(localStorage.getItem("clientes"))||[];
-function salvarCliente(){
-  clientes.push({n:nome.value,t:tel.value,o:obs.value});
-  localStorage.setItem("clientes",JSON.stringify(clientes));
-  listaClientes.innerHTML=clientes.map(c=><div class="card">${c.n}<br>${c.t}<br>${c.o}</div>).join("");
-}
-
-let agenda=JSON.parse(localStorage.getItem("agenda"))||[];
-function salvarAgenda(){
-  agenda.push({d:data.value,h:hora.value,c:cliente.value,s:servico.value});
-  localStorage.setItem("agenda",JSON.stringify(agenda));
-  listaAgenda.innerHTML=agenda.map(a=><div class="card">${a.d} ${a.h}<br>${a.c}<br>${a.s}</div>).join("");
+function abrirAba(id) {
+  document.querySelectorAll("section").forEach(sec => {
+    sec.style.display = "none";
+  });
+  document.getElementById(id).style.display = "block";
 }
 </script>
 
