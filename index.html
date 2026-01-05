@@ -3,41 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MR VPS</title>
 
 <link rel="manifest" href="manifest.json">
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f2f2f2;
-}
-
-header {
-  background: #0a3d62;
-  color: white;
-  padding: 15px;
-  text-align: center;
-}
-
-nav button {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  background: #1e90ff;
-  color: white;
-  font-size: 16px;
-  margin-top: 5px;
-}
-
-section {
-  display: none;
-  padding: 15px;
-  background: white;
-  margin: 10px;
-}
+body{font-family:Arial;margin:0;background:#f2f2f2}
+header{background:#0a3d62;color:#fff;padding:15px;text-align:center}
+nav button{width:100%;padding:14px;border:none;background:#1e90ff;color:#fff;font-size:16px;margin-top:5px}
+section{display:none;background:#fff;margin:10px;padding:15px;border-radius:6px}
+input,textarea,button{width:100%;padding:10px;margin-top:8px}
+.botao-wpp{background:#25d366;color:#fff;font-size:18px;margin:10px;border:none}
 </style>
 </head>
 
@@ -48,39 +24,98 @@ section {
 </header>
 
 <nav>
-  <button type="button" onclick="abrirAba('comprar')">Comprar</button>
-  <button type="button" onclick="abrirAba('instalacao')">Instalação</button>
-  <button type="button" onclick="abrirAba('manutencao')">Manutenção</button>
-  <button type="button" onclick="abrirAba('laudo')">Laudo</button>
+  <button onclick="abrirAba('comprar')">Comprar</button>
+  <button onclick="abrirAba('instalacao')">Instalação</button>
+  <button onclick="abrirAba('manutencao')">Manutenção</button>
+  <button onclick="abrirAba('agenda')">Agenda</button>
+  <button onclick="abrirAba('clientes')">Clientes</button>
 </nav>
 
 <section id="comprar">
-  <h3>Comprar</h3>
-  <p>Adicionar serviços manualmente.</p>
+  <h3>Serviços / Compras</h3>
+  <textarea id="servicos" placeholder="Digite serviços ou produtos..."></textarea>
+  <button onclick="salvar('servicos')">Salvar</button>
 </section>
 
 <section id="instalacao">
-  <h3>Instalação</h3>
-  <p>Instalação de TVs, suportes, portões, CFTV.</p>
+  <h3>Instalações</h3>
+  <p>TVs • Suportes • CFTV • Portões • TI</p>
 </section>
 
 <section id="manutencao">
   <h3>Manutenção</h3>
-  <p>Manutenção geral.</p>
+  <p>Manutenção geral e corretiva</p>
 </section>
 
-<section id="laudo">
-  <h3>Laudo</h3>
-  <p>Gerar laudos técnicos.</p>
+<section id="agenda">
+  <h3>Agenda</h3>
+  <input type="date" id="data">
+  <input type="time" id="hora">
+  <textarea id="obs" placeholder="Observações"></textarea>
+  <button onclick="salvarAgenda()">Salvar Agenda</button>
+  <div id="listaAgenda"></div>
 </section>
+
+<section id="clientes">
+  <h3>Cadastro de Clientes</h3>
+  <input id="nome" placeholder="Nome do cliente">
+  <input id="telefone" placeholder="Telefone">
+  <textarea id="historico" placeholder="Serviço / Histórico"></textarea>
+  <button onclick="salvarCliente()">Salvar Cliente</button>
+  <div id="listaClientes"></div>
+</section>
+
+<button class="botao-wpp" onclick="abrirWhats()">📲 WhatsApp</button>
 
 <script>
-function abrirAba(id) {
-  document.querySelectorAll("section").forEach(sec => {
-    sec.style.display = "none";
-  });
-  document.getElementById(id).style.display = "block";
+function abrirAba(id){
+  document.querySelectorAll('section').forEach(s=>s.style.display='none');
+  document.getElementById(id).style.display='block';
 }
+
+function salvar(chave){
+  localStorage.setItem(chave,document.getElementById(chave).value);
+  alert('Salvo!');
+}
+
+function salvarAgenda(){
+  let lista=JSON.parse(localStorage.getItem('agenda')||'[]');
+  lista.push({
+    data:data.value,
+    hora:hora.value,
+    obs:obs.value
+  });
+  localStorage.setItem('agenda',JSON.stringify(lista));
+  mostrarAgenda();
+}
+
+function mostrarAgenda(){
+  let lista=JSON.parse(localStorage.getItem('agenda')||'[]');
+  listaAgenda.innerHTML=lista.map(a=><p>${a.data} ${a.hora} - ${a.obs}</p>).join('');
+}
+
+function salvarCliente(){
+  let lista=JSON.parse(localStorage.getItem('clientes')||'[]');
+  lista.push({
+    nome:nome.value,
+    tel:telefone.value,
+    hist:historico.value
+  });
+  localStorage.setItem('clientes',JSON.stringify(lista));
+  mostrarClientes();
+}
+
+function mostrarClientes(){
+  let lista=JSON.parse(localStorage.getItem('clientes')||'[]');
+  listaClientes.innerHTML=lista.map(c=><p>${c.nome} - ${c.tel}<br>${c.hist}</p>).join('');
+}
+
+function abrirWhats(){
+  window.open("https://wa.me/5518996362624","_blank");
+}
+
+mostrarAgenda();
+mostrarClientes();
 </script>
 
 </body>
