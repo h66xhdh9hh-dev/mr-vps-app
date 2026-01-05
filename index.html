@@ -5,59 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MR VPS</title>
 
-<link rel="manifest" href="manifest.json">
-
 <style>
-body{
-  font-family: Arial, sans-serif;
-  margin:0;
-  background:#f2f2f2;
-}
-header{
-  background:#0a3d62;
-  color:#fff;
-  padding:15px;
-  text-align:center;
-}
-nav{
-  display:flex;
-  flex-wrap:wrap;
-}
-nav button{
-  flex:1;
+body { font-family: Arial; margin:0; background:#eee }
+header { background:#003366; color:#fff; padding:15px; text-align:center }
+nav button {
+  width:100%;
   padding:12px;
   border:none;
   background:#1e90ff;
   color:#fff;
-  font-size:14px;
+  font-size:16px;
+  margin-bottom:4px;
 }
-section{
+section {
   display:none;
   background:#fff;
   margin:10px;
   padding:15px;
-  border-radius:6px;
-}
-input, textarea{
-  width:100%;
-  padding:8px;
-  margin-top:6px;
-}
-button.acao{
-  margin-top:10px;
-  padding:10px;
-  background:#0a3d62;
-  color:#fff;
-  border:none;
-}
-.botao-wpp{
-  background:#25d366;
-  color:#fff;
-  padding:14px;
-  border:none;
-  font-size:18px;
-  margin:10px;
-  width:calc(100% - 20px);
 }
 </style>
 </head>
@@ -69,121 +33,33 @@ button.acao{
 </header>
 
 <nav>
-  <button type="button" onclick="abrirAba('comprar')">Comprar</button>
-  <button type="button" onclick="abrirAba('instalacao')">Instalação</button>
-  <button type="button" onclick="abrirAba('manutencao')">Manutenção</button>
-  <button type="button" onclick="abrirAba('agenda')">Agenda</button>
-  <button type="button" onclick="abrirAba('clientes')">Clientes</button>
+  <button onclick="mostrar('a')">Comprar</button>
+  <button onclick="mostrar('b')">Instalação</button>
+  <button onclick="mostrar('c')">Manutenção</button>
 </nav>
 
-<section id="comprar">
-  <h3>Serviços / Compras</h3>
-  <textarea id="servicos" placeholder="Descreva serviços ou produtos"></textarea>
-  <button class="acao" onclick="salvarServicos()">Salvar</button>
+<section id="a">
+  <h3>Comprar</h3>
+  <p>Conteúdo comprar</p>
 </section>
 
-<section id="instalacao">
-  <h3>Instalações</h3>
-  <p>TVs • Suportes • CFTV • Portões • TI</p>
+<section id="b">
+  <h3>Instalação</h3>
+  <p>Conteúdo instalação</p>
 </section>
 
-<section id="manutencao">
+<section id="c">
   <h3>Manutenção</h3>
-  <p>Manutenção geral e corretiva</p>
+  <p>Conteúdo manutenção</p>
 </section>
-
-<section id="agenda">
-  <h3>Agenda</h3>
-  <input type="date" id="data">
-  <input type="time" id="hora">
-  <textarea id="obs" placeholder="Observações"></textarea>
-  <button class="acao" onclick="salvarAgenda()">Salvar Agenda</button>
-  <div id="listaAgenda"></div>
-</section>
-
-<section id="clientes">
-  <h3>Cadastro de Clientes</h3>
-  <input id="nome" placeholder="Nome do cliente">
-  <input id="telefone" placeholder="Telefone">
-  <textarea id="historico" placeholder="Serviço / Histórico"></textarea>
-  <button class="acao" onclick="salvarCliente()">Salvar Cliente</button>
-  <div id="listaClientes"></div>
-</section>
-
-<button class="botao-wpp" onclick="abrirWhats()">📲 WhatsApp</button>
 
 <script>
-function abrirAba(id){
-  document.querySelectorAll("section").forEach(sec => sec.style.display="none");
+function mostrar(id){
+  document.getElementById("a").style.display="none";
+  document.getElementById("b").style.display="none";
+  document.getElementById("c").style.display="none";
   document.getElementById(id).style.display="block";
 }
-
-/* SERVIÇOS */
-function salvarServicos(){
-  const txt = document.getElementById("servicos").value;
-  localStorage.setItem("servicos", txt);
-  alert("Serviços salvos");
-}
-
-/* AGENDA */
-function salvarAgenda(){
-  const data = document.getElementById("data").value;
-  const hora = document.getElementById("hora").value;
-  const obs  = document.getElementById("obs").value;
-
-  if(!data || !hora){
-    alert("Preencha data e hora");
-    return;
-  }
-
-  let lista = JSON.parse(localStorage.getItem("agenda") || "[]");
-  lista.push({data, hora, obs});
-  localStorage.setItem("agenda", JSON.stringify(lista));
-  mostrarAgenda();
-}
-
-function mostrarAgenda(){
-  let lista = JSON.parse(localStorage.getItem("agenda") || "[]");
-  let div = document.getElementById("listaAgenda");
-  div.innerHTML = "";
-  lista.forEach(a=>{
-    div.innerHTML += <p>${a.data} ${a.hora} - ${a.obs}</p>;
-  });
-}
-
-/* CLIENTES */
-function salvarCliente(){
-  const nome = document.getElementById("nome").value;
-  const tel  = document.getElementById("telefone").value;
-  const hist = document.getElementById("historico").value;
-
-  if(!nome){
-    alert("Informe o nome");
-    return;
-  }
-
-  let lista = JSON.parse(localStorage.getItem("clientes") || "[]");
-  lista.push({nome, tel, hist});
-  localStorage.setItem("clientes", JSON.stringify(lista));
-  mostrarClientes();
-}
-
-function mostrarClientes(){
-  let lista = JSON.parse(localStorage.getItem("clientes") || "[]");
-  let div = document.getElementById("listaClientes");
-  div.innerHTML = "";
-  lista.forEach(c=>{
-    div.innerHTML += <p><b>${c.nome}</b><br>${c.tel}<br>${c.hist}</p><hr>;
-  });
-}
-
-/* WHATSAPP */
-function abrirWhats(){
-  window.open("https://wa.me/5518996362624","_blank");
-}
-
-mostrarAgenda();
-mostrarClientes();
 </script>
 
 </body>
