@@ -8,17 +8,57 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-body{font-family:Arial;margin:0;background:#f2f2f2}
-header{background:#0a3d62;color:#fff;padding:15px;text-align:center}
-nav button{width
-
-<style>
-body{font-family:Arial;margin:0;background:#f2f2f2}
-header{background:#0a3d62;color:#fff;padding:15px;text-align:center}
-nav button{width:100%;padding:14px;border:none;background:#1e90ff;color:#fff;font-size:16px;margin-top:5px}
-section{display:none;background:#fff;margin:10px;padding:15px;border-radius:6px}
-input,textarea,button{width:100%;padding:10px;margin-top:8px}
-.botao-wpp{background:#25d366;color:#fff;font-size:18px;margin:10px;border:none}
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#f2f2f2;
+}
+header{
+  background:#0a3d62;
+  color:#fff;
+  padding:15px;
+  text-align:center;
+}
+nav{
+  display:flex;
+  flex-wrap:wrap;
+}
+nav button{
+  flex:1;
+  padding:12px;
+  border:none;
+  background:#1e90ff;
+  color:#fff;
+  font-size:14px;
+}
+section{
+  display:none;
+  background:#fff;
+  margin:10px;
+  padding:15px;
+  border-radius:6px;
+}
+input, textarea{
+  width:100%;
+  padding:8px;
+  margin-top:6px;
+}
+button.acao{
+  margin-top:10px;
+  padding:10px;
+  background:#0a3d62;
+  color:#fff;
+  border:none;
+}
+.botao-wpp{
+  background:#25d366;
+  color:#fff;
+  padding:14px;
+  border:none;
+  font-size:18px;
+  margin:10px;
+  width:calc(100% - 20px);
+}
 </style>
 </head>
 
@@ -29,17 +69,17 @@ input,textarea,button{width:100%;padding:10px;margin-top:8px}
 </header>
 
 <nav>
-  <button onclick="abrirAba('comprar')">Comprar</button>
-  <button onclick="abrirAba('instalacao')">Instalação</button>
-  <button onclick="abrirAba('manutencao')">Manutenção</button>
-  <button onclick="abrirAba('agenda')">Agenda</button>
-  <button onclick="abrirAba('clientes')">Clientes</button>
+  <button type="button" onclick="abrirAba('comprar')">Comprar</button>
+  <button type="button" onclick="abrirAba('instalacao')">Instalação</button>
+  <button type="button" onclick="abrirAba('manutencao')">Manutenção</button>
+  <button type="button" onclick="abrirAba('agenda')">Agenda</button>
+  <button type="button" onclick="abrirAba('clientes')">Clientes</button>
 </nav>
 
 <section id="comprar">
   <h3>Serviços / Compras</h3>
-  <textarea id="servicos" placeholder="Digite serviços ou produtos..."></textarea>
-  <button onclick="salvar('servicos')">Salvar</button>
+  <textarea id="servicos" placeholder="Descreva serviços ou produtos"></textarea>
+  <button class="acao" onclick="salvarServicos()">Salvar</button>
 </section>
 
 <section id="instalacao">
@@ -57,7 +97,7 @@ input,textarea,button{width:100%;padding:10px;margin-top:8px}
   <input type="date" id="data">
   <input type="time" id="hora">
   <textarea id="obs" placeholder="Observações"></textarea>
-  <button onclick="salvarAgenda()">Salvar Agenda</button>
+  <button class="acao" onclick="salvarAgenda()">Salvar Agenda</button>
   <div id="listaAgenda"></div>
 </section>
 
@@ -66,7 +106,7 @@ input,textarea,button{width:100%;padding:10px;margin-top:8px}
   <input id="nome" placeholder="Nome do cliente">
   <input id="telefone" placeholder="Telefone">
   <textarea id="historico" placeholder="Serviço / Histórico"></textarea>
-  <button onclick="salvarCliente()">Salvar Cliente</button>
+  <button class="acao" onclick="salvarCliente()">Salvar Cliente</button>
   <div id="listaClientes"></div>
 </section>
 
@@ -74,47 +114,70 @@ input,textarea,button{width:100%;padding:10px;margin-top:8px}
 
 <script>
 function abrirAba(id){
-  document.querySelectorAll('section').forEach(s=>s.style.display='none');
-  document.getElementById(id).style.display='block';
+  document.querySelectorAll("section").forEach(sec => sec.style.display="none");
+  document.getElementById(id).style.display="block";
 }
 
-function salvar(chave){
-  localStorage.setItem(chave,document.getElementById(chave).value);
-  alert('Salvo!');
+/* SERVIÇOS */
+function salvarServicos(){
+  const txt = document.getElementById("servicos").value;
+  localStorage.setItem("servicos", txt);
+  alert("Serviços salvos");
 }
 
+/* AGENDA */
 function salvarAgenda(){
-  let lista=JSON.parse(localStorage.getItem('agenda')||'[]');
-  lista.push({
-    data:data.value,
-    hora:hora.value,
-    obs:obs.value
-  });
-  localStorage.setItem('agenda',JSON.stringify(lista));
+  const data = document.getElementById("data").value;
+  const hora = document.getElementById("hora").value;
+  const obs  = document.getElementById("obs").value;
+
+  if(!data || !hora){
+    alert("Preencha data e hora");
+    return;
+  }
+
+  let lista = JSON.parse(localStorage.getItem("agenda") || "[]");
+  lista.push({data, hora, obs});
+  localStorage.setItem("agenda", JSON.stringify(lista));
   mostrarAgenda();
 }
 
 function mostrarAgenda(){
-  let lista=JSON.parse(localStorage.getItem('agenda')||'[]');
-  listaAgenda.innerHTML=lista.map(a=><p>${a.data} ${a.hora} - ${a.obs}</p>).join('');
+  let lista = JSON.parse(localStorage.getItem("agenda") || "[]");
+  let div = document.getElementById("listaAgenda");
+  div.innerHTML = "";
+  lista.forEach(a=>{
+    div.innerHTML += <p>${a.data} ${a.hora} - ${a.obs}</p>;
+  });
 }
 
+/* CLIENTES */
 function salvarCliente(){
-  let lista=JSON.parse(localStorage.getItem('clientes')||'[]');
-  lista.push({
-    nome:nome.value,
-    tel:telefone.value,
-    hist:historico.value
-  });
-  localStorage.setItem('clientes',JSON.stringify(lista));
+  const nome = document.getElementById("nome").value;
+  const tel  = document.getElementById("telefone").value;
+  const hist = document.getElementById("historico").value;
+
+  if(!nome){
+    alert("Informe o nome");
+    return;
+  }
+
+  let lista = JSON.parse(localStorage.getItem("clientes") || "[]");
+  lista.push({nome, tel, hist});
+  localStorage.setItem("clientes", JSON.stringify(lista));
   mostrarClientes();
 }
 
 function mostrarClientes(){
-  let lista=JSON.parse(localStorage.getItem('clientes')||'[]');
-  listaClientes.innerHTML=lista.map(c=><p>${c.nome} - ${c.tel}<br>${c.hist}</p>).join('');
+  let lista = JSON.parse(localStorage.getItem("clientes") || "[]");
+  let div = document.getElementById("listaClientes");
+  div.innerHTML = "";
+  lista.forEach(c=>{
+    div.innerHTML += <p><b>${c.nome}</b><br>${c.tel}<br>${c.hist}</p><hr>;
+  });
 }
 
+/* WHATSAPP */
 function abrirWhats(){
   window.open("https://wa.me/5518996362624","_blank");
 }
